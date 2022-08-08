@@ -1,0 +1,16 @@
+FROM golang:latest
+
+RUN useradd -ms /bin/bash build
+
+WORKDIR /
+
+RUN apt-get update
+RUN apt-get install -y build-essential autoconf automake bison flex gawk libtool libtool-bin libncurses-dev curl file git gperf help2man texinfo zip unzip wget git
+
+RUN git clone https://github.com/koreader/koxtoolchain.git
+RUN chown -R build koxtoolchain
+
+WORKDIR /koxtoolchain
+
+USER build
+RUN ["./gen-tc.sh", "kobo"]
